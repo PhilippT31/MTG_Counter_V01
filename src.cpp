@@ -1,5 +1,6 @@
 #include <iostream> // Bibliothek fuer IO
 #include <string>
+#include <cmath>
 using namespace std;
 
 //game constants
@@ -26,18 +27,22 @@ player1.cmd_dmg = 0;
 player1.toxic_cnt = 0;
 player1.out_of_cards = false;
 
+player2.life_cnt = lifecount_start;
 player2.cmd_dmg = 0;
 player2.toxic_cnt = 0;
 player2.out_of_cards = false;
 
+player3.life_cnt = lifecount_start;
 player3.cmd_dmg = 0;
 player3.toxic_cnt = 0;
 player3.out_of_cards = false;
 
+player4.life_cnt = lifecount_start;
 player4.cmd_dmg = 0;
 player4.toxic_cnt = 0;
 player4.out_of_cards = false;
 
+player5.life_cnt = lifecount_start;
 player5.cmd_dmg = 0;
 player5.toxic_cnt = 0;
 player5.out_of_cards = false;
@@ -52,6 +57,7 @@ const int max_players = 5;
 int player_cnt = 0;
 int a = 0;
 int lifecount_start = 40;
+int rounds_cnt = 0;
 
 
 void main() {
@@ -61,28 +67,68 @@ void main() {
 	cout << "How many players are there?";
 	cin >> player_cnt;
 
-		//entering the names of each player
+	//entering the names of each player
 
-		//entering the number of rounds
+	naming_players(player_cnt);
 
-		// declaring the starter by random choice
+	//entering the number of rounds
 
-		// start of game
+	cout << "How many games do you want to play?" << endl;
+	cin >> rounds_cnt;
 
-		// the game
+	// declaring the starter by random choice
 
-		// end of game
+	int starter = rand() % player_cnt + min_players;
 
-		// saving the score
+	// start of game
 
-		// rounds, points
+	// the game
 
-		// effects like toxic or raditation
+	// end of game
 
-		// display functions
+	// saving the score
 
-		// button functions
+	// rounds, points
+
+	// effects like toxic or raditation
+
+	// display functions
+
+	// button functions
 
 
 	cout << "this code does nothing yet";
+}
+
+void naming_players(a) {
+	cout << "Enter the name of player 1: ";
+	cin >> player1.name;
+
+	switch (a) {
+		case(5):
+			cout << "Enter the name of player 2: ";
+			cin >> player2.name;
+			cout << "Enter the name of player 3: ";
+			cin >> player3.name;
+			cout << "Enter the name of player 4: ";
+			cin >> player4.name;
+			cout << "Enter the name of player 5: ";
+			cin >> player5.name;
+		case(4):
+			cout << "Enter the name of player 2: ";
+			cin >> player2.name;
+			cout << "Enter the name of player 3: ";
+			cin >> player3.name;
+			cout << "Enter the name of player 4: ";
+			cin >> player4.name;
+		case(3):
+			cout << "Enter the name of player 2: ";
+			cin >> player2.name;
+			cout << "Enter the name of player 3: ";
+			cin >> player3.name;
+		case(2):
+			cout << "Enter the name of player 2: ";
+			cin >> player2.name;
+	}
+		
 }
