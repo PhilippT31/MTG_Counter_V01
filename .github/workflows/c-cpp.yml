@@ -1,107 +1,65 @@
 #name: C/C++ CI
 
-#on:
-#  push:
-#    branches: [ "master" ]
-  #pull_request:
-    #branches: [ "master" ]
-
-#jobs:
-#  build:
-
-#    runs-on: ubuntu-latest
-
-#    steps:
-#    - uses: actions/checkout@v4
-#    - name: configure
-#      run: ./configure
-#    - name: make
-#      run: make
-#    - name: make check
-#      run: make check
-#    - name: make distcheck
-#      run: make distcheck
-#    - name: build
-#      run: build
-#    - name: test
-#      run: test
-
-name: example-config
 on:
   push:
-    branches:
-      - 'master'
+    branches: [ "master" ]
   pull_request:
-  workflow_dispatch:
+    branches: [ "master" ]
 
 jobs:
 
-  start:
-    # example where we pass custom base URL
-    runs-on: ubuntu-22.04
+  build:
+
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+    - name: configure
+      run: ./configure
+    - name: make
+      run: make
+    - name: make check
+      run: make check
+    - name: make distcheck
+      run: make distcheck
+    - name: build
+      run: build
+    - name: test
+      run: test
+#    - script: echo Hello, world!
+#      displayName: 'Run a one-line script'
+    
+# When manually running the pipeline, you can select whether it
+# succeeds or fails.
+   # parameters:
+  #  - name: succeed
+  #    displayName: Succeed or fail
+  #    type: boolean
+  #    default: false
+    
+  #  trigger:
+   # - main
 
-      - name: Cypress tests
-        uses: ./
-        with:
-          working-directory: examples/config
-          build: npm run build
-          start: npm start
-          wait-on: 'http://localhost:3333'
-          config: baseUrl=http://localhost:3333
+#pool:
+#  vmImage: ubuntu-latest
 
-  config-file:
-    # example where we use a custom config-file
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # This malformed command causes the job to fail
+  # Only run this command if the succeed variable is set to false
+#- script: git clone malformed input
+#  condition: eq(${{ parameters.succeed }}, false)
 
-      - name: Cypress tests
-        uses: ./
-        with:
-          working-directory: examples/config
-          build: npm run build
-          start: npm start
-          wait-on: 'http://localhost:3333'
-          config-file: cypress.config-alternate.js
+# This job creates a work item, and only runs if the previous job failed
+#- job: ErrorHandler
+#  dependsOn: Work
+#  condition: failed()
+#  steps: 
+#  - bash: |
+#      az boards work-item create \
+#        --title "Build $(build.buildNumber) failed" \
+#        --type bug \
+#        --org $(System.TeamFoundationCollectionUri) \
+#        --project $(System.TeamProject)
+#    env: 
+#      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+#    displayName: 'Create work item on failure'
 
-  separate-specs:
-    # example where we pass specs to run via multiple lines
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Cypress tests
-        uses: ./
-        with:
-          working-directory: examples/config
-          build: npm run build
-          start: npm start
-          wait-on: 'http://localhost:3333'
-          config: baseUrl=http://localhost:3333
-          spec: |
-            cypress/e2e/spec-a.cy.js
-            cypress/e2e/spec-b.cy.js
-
-  separate-specs-with-wildcard:
-    # example where we pass specs to run via multiple lines and wildcards
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Cypress tests
-        uses: ./
-        with:
-          working-directory: examples/config
-          build: npm run build
-          start: npm start
-          wait-on: 'http://localhost:3333'
-          config: baseUrl=http://localhost:3333
-          spec: |
-            cypress/e2e/spec-a.cy.js
-            cypress/**/*-b.cy.js
