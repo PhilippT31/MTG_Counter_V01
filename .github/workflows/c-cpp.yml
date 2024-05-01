@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [ "master" ]
 
+# Define the jobs we want to run for this project
 jobs:
 
   build:
@@ -14,8 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
+#    - name: configure
+#      run: ./configure
     - name: make
       run: make
     - name: make check
@@ -26,6 +27,34 @@ jobs:
       run: build
     - name: test
       run: test
+
+# on:
+#   push:
+#     branches: [ "master" ]
+#   pull_request:
+#     branches: [ "master" ]
+
+# jobs:
+
+#   build:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: configure
+#       run: ./configure
+#     - name: make
+#       run: make
+#     - name: make check
+#       run: make check
+#     - name: make distcheck
+#       run: make distcheck
+#     - name: build
+#       run: build
+#     - name: test
+#       run: test
+
 #    - script: echo Hello, world!
 #      displayName: 'Run a one-line script'
     
