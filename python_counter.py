@@ -160,7 +160,7 @@ def nextplayer(): #runnning through the different players
 def player_lost(player):
     
     if(player_stats[player-1, 1] <= 0):
-        
+        print("Player", player, "is leaving the game.")
     
 
 def game_start():
