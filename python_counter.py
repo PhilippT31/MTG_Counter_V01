@@ -1,4 +1,5 @@
 ## MTG Counter - 02.07.2024 - P. Thorey
+
 # The goal of this app is to have an assistant for playing magic the gathering
 # The players will have a name, a lifecounter, a poison counter and a attribute which determines the playorder
 
@@ -157,25 +158,27 @@ def nextplayer(): #runnning through the different players
         active_player = 0
     turn()
     
-def player_lost(player):
-    
-    if(player_stats[player-1, 1] <= 0):
-        print("Player", player, "is leaving the game.")
-    
-
-def game_start():
+def turn():
+    global turncounter
+    global damage
+    global damage_cmd
+    global damage_tox
     global active_player
+    
     print("The game has started!")
     print("It's player ", active_player, "'s turn.")
     
-def turn():
-    global turncounter
-    
-    damage
-    damage_cmd
-    damage_tox
-    
+    if(damage != 0 && damage_cmd != 0 && damage_tox != 0):    
+        logprint("No damage was dealt this round")
+
+        
+    turncounter + 1
+    logprint(turncounter)
     nextplayer()
+
+def player_lost(player):   
+    if(player_stats[player-1, 1] <= 0):
+        print("Player", player, "is leaving the game.")
 
 def game(): #Game with states which will follow
     state = 0
@@ -189,10 +192,9 @@ def game(): #Game with states which will follow
     define_playorder(playernumber)
     
     state = 3
-    game_start()
+    turn()
     
     state = 4
-    turn()
     
     state = 10
     
@@ -200,6 +202,5 @@ def game(): #Game with states which will follow
     print("The game has finished")
     print("Final Score: ")
     print(player_stats)
-    # return(state)
 
 game() #Function call for the game
