@@ -168,7 +168,7 @@ def turn():
     print("The game has started!")
     print("It's player ", active_player, "'s turn.")
     
-    if(damage != 0 && damage_cmd != 0 && damage_tox != 0):    
+    if(damage != 0 and damage_cmd != 0 and damage_tox != 0):    
         logprint("No damage was dealt this round")
 
         
