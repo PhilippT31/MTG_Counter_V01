@@ -29,14 +29,15 @@
 # Imports
 import numpy as np
 import random
+# from tkinter import *
 #import plotly as plt
 
 # Definiton of the players
-# Playernumber, Lifecounter, Toxiccounter, First Player
-player1 = np.array([1, 40, 0, 0])
-player2 = np.array([2, 40, 0, 0])
-player3 = np.array([3, 40, 0, 0])
-player4 = np.array([4, 40, 0, 0])
+# Playernumber, Lifecounter, Toxiccounter, Active Player, CmdDmg x4
+player1 = np.array([1, 40, 0, 0, 0, 0, 0, 0])
+player2 = np.array([2, 40, 0, 0, 0, 0, 0, 0])
+player3 = np.array([3, 40, 0, 0, 0, 0, 0, 0])
+player4 = np.array([4, 40, 0, 0, 0, 0, 0, 0])
 
 # defintions
 # choice = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
@@ -49,6 +50,10 @@ logging = True
 choice = False
 active_player = 1
 turncounter = 0
+damage = 0
+damage_cmd = 0
+damage_tox = 0
+# gui = Tk()
 
 # Functions
 def logprint(text):
@@ -59,10 +64,10 @@ def comb_players(b): #Function to combine the players arrays
     global player_stats #neccessary to determine the global array
     
     logprint("Log: Combination Started")    
-    player_stats_1d = np.concatenate((player1, player2, player3, player4)) #appending the arrays
+    player_stats_1d = np.concatenate((player1, player2, player3, player4)) #Combining the arrays
     logprint("Log: Arrays combined")
     
-    player_stats_2d = player_stats_1d.reshape(4, 4) #reshaping the array to 2D
+    player_stats_2d = player_stats_1d.reshape(4, 8) #reshaping the array to 2D
     logprint("Log: Array reshaped")
     logprint(player_stats_2d)
     
@@ -76,7 +81,7 @@ def comb_players(b): #Function to combine the players arrays
             b = int(input("Enter the number of players: "))
     elif(b < 2):
         print("Input invalid: Out of range (Too Low)")
-        parsing = input("Parse to 4? [y/n] ").lower()
+        parsing = input("Parse to 2? [y/n] ").lower()
         if(parsing == "y"):
             b = 2
         elif(parsing == "n"):
@@ -98,7 +103,7 @@ def comb_players(b): #Function to combine the players arrays
     logprint("Game array: ")
     logprint(player_stats)
 
-    return(player_stats) #necessary?
+    # return(player_stats) #necessary?
     
 # def print_players(): #Function for fast printing of all the players (tbc)
 # this function should also save the playstats, as well as order them and input the newest stats
@@ -111,10 +116,10 @@ def comb_players(b): #Function to combine the players arrays
 
 def define_playorder(players): #Function used to define the playorder (by dice or random)
     global player_stats
-    global active_player
+    # global active_player
     logprint("Log: Playorder() started")
     
-    skip = True
+    skip = False
     if(skip == False):
         print("Do you want to determine the starter by a dice roll?")
         choice_raw = 'a'
@@ -145,8 +150,8 @@ def define_playorder(players): #Function used to define the playorder (by dice o
     elif(choice == False):
         first = int(input("Who rolled the highest number? Player..."))
     logprint(first)
-    player_stats[first, -1] = 1
-    print("Player", first+1, "is the first player")    
+    player_stats[first-1, -1] = 1
+    print("Player", first, "is the first player")    
     logprint(player_stats)        
     
 def nextplayer(): #runnning through the different players
@@ -160,21 +165,35 @@ def nextplayer(): #runnning through the different players
     
 def turn():
     global turncounter
-    global damage
-    global damage_cmd
-    global damage_tox
-    global active_player
+    damage = 0
+    damage_cmd = 0
+    damage_tox = 0
+    # global active_player
+    global player_stats
+
     
     print("The game has started!")
-    print("It's player ", active_player, "'s turn.")
+    print("It's player ", active_player(), "'s turn.")
     
-    if(damage != 0 and damage_cmd != 0 and damage_tox != 0):    
-        logprint("No damage was dealt this round")
+    damage = int(input("How much damage was dealt this round? "))
+    damage_cmd = int(input("How much commander damage was dealt this round? "))
+    damage_tox = int(input("How much toxic damage was dealt this round? "))
 
-        
+    if(damage != 0 and damage_cmd != 0 and damage_tox != 0):    
+        print("No damage was dealt this round")
+    elif(damage_cmd == 0 and damage_tox != 0):
+        print(damage, " damage was dealt!")
+
     turncounter + 1
-    logprint(turncounter)
+    logprint("Turncounter: ", turncounter)
     nextplayer()
+
+def active_player():
+    active = player_stats[:, 2]
+    logprint(active)
+    act = np.where(active == 1)
+    print(act, " is the active player")
+    return act
 
 def player_lost(player):   
     if(player_stats[player-1, 1] <= 0):
@@ -182,6 +201,7 @@ def player_lost(player):
 
 def game(): #Game with states which will follow
     state = 0
+    # init_gui()
     print("Hello Players!")
     
     state = 1
