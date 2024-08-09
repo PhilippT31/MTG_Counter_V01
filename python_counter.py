@@ -154,15 +154,6 @@ def define_playorder(players): #Function used to define the playorder (by dice o
     print("Player", first, "is the first player")    
     logprint(player_stats)        
     
-def nextplayer(): #runnning through the different players
-    global active_player #indexing the row of player_stats of the active player
-    logprint("Active Player: ")
-    logprint(active_player)
-    active_player + 1
-    if(active_player > 3):
-        active_player = 0
-    turn()
-    
 def turn():
     global turncounter
     damage = 0
@@ -171,9 +162,7 @@ def turn():
     # global active_player
     global player_stats
 
-    
-    print("The game has started!")
-    print("It's player ", active_player(), "'s turn.")
+    # print("It's player ", active_player(), "'s turn.")
     
     damage = int(input("How much damage was dealt this round? "))
     damage_cmd = int(input("How much commander damage was dealt this round? "))
@@ -185,8 +174,10 @@ def turn():
         print(damage, " damage was dealt!")
 
     turncounter + 1
-    logprint("Turncounter: ", turncounter)
-    nextplayer()
+    logprint("Turncounter: ")
+    logprint(turncounter)
+
+    stats_check()
 
 def active_player():
     global player_stats
@@ -195,15 +186,42 @@ def active_player():
     i = 0
     for i in range(0, len(active)):
         if active[i] == 1:
-            print("It's players ", i, "'s turn!")
+            print("It's players ", i + 1, "'s turn!")
         else :
-            # print("It was not ", i)
             i + 1
-    return i
+    
+    ## Nextplayer
+    try:
+        player = active[i+1]
+    except:
+        player = active[0]
+    
+    # Add the 1D-Array to the player_stats
+    j = 0
+    for j in range(0, len(active)):
+        player_stats[j, 3] = active[j]
+
+    return player
 
 def player_lost(player):   
     if(player_stats[player-1, 1] <= 0):
         print("Player", player, "is leaving the game.")
+
+def stats_check():
+    global player_stats
+    # Check for overall damage
+    i = 0
+    for i in range(0, len(player_stats)):
+        if player_stats[i, 3] < 1:
+            player_lost(i)
+    
+    # Check for overall damage
+    i, j = 0
+    for i in range(0, len(player_stats)):
+        for j in range(0, len(player_stats)):
+            if player_stats[i, j + 3] < 1 and i != j:
+                player_lost(i)
+        
 
 def game(): #Game with states which will follow
     state = 0
