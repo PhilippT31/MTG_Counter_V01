@@ -150,7 +150,7 @@ def define_playorder(players): #Function used to define the playorder (by dice o
     elif(choice == False):
         first = int(input("Who rolled the highest number? Player..."))
     logprint(first)
-    player_stats[first-1, -1] = 1
+    player_stats[first-1, 3] = 1
     print("Player", first, "is the first player")    
     logprint(player_stats)        
     
@@ -189,11 +189,17 @@ def turn():
     nextplayer()
 
 def active_player():
-    active = player_stats[:, 2]
+    global player_stats
+    active = player_stats[:, 3]
     logprint(active)
-    act = np.where(active == 1)
-    print(act, " is the active player")
-    return act
+    i = 0
+    for i in range(0, len(active)):
+        if active[i] == 1:
+            print("It's players ", i, "'s turn!")
+        else :
+            # print("It was not ", i)
+            i + 1
+    return i
 
 def player_lost(player):   
     if(player_stats[player-1, 1] <= 0):
