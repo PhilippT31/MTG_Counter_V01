@@ -92,7 +92,9 @@ def comb_players(b): #Function to combine the players arrays
         player_stats = np.delete(player_stats_2d, 3, 0) # this one deletes the 4th line
         # print("Log: One line deleted")
         # print(player_stats)
-        if(b == 2):
+        i = 0
+        for i in range(0, len(player_stats)):
+            np.delete(player_stats,)
             player_stats = np.delete(player_stats, 2, 0) # this one deletes the 3rd line 
             # print("Log: One line deleted")
             # print(player_stats)
