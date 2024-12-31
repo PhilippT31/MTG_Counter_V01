@@ -34,10 +34,15 @@ import random
 
 # Definiton of the players
 # Playernumber, Lifecounter, Toxiccounter, Active Player, CmdDmg x4
-player1 = np.array([1, 40, 0, 0, 0, 0, 0, 0])
-player2 = np.array([2, 40, 0, 0, 0, 0, 0, 0])
-player3 = np.array([3, 40, 0, 0, 0, 0, 0, 0])
-player4 = np.array([4, 40, 0, 0, 0, 0, 0, 0])
+# player1 = np.array([1, 40, 0, 0, 0, 0, 0, 0])
+# player2 = np.array([2, 40, 0, 0, 0, 0, 0, 0])
+# player3 = np.array([3, 40, 0, 0, 0, 0, 0, 0])
+# player4 = np.array([4, 40, 0, 0, 0, 0, 0, 0])
+
+player1 = np.array([1, 40, 0, 0])
+player2 = np.array([2, 40, 0, 0])
+player3 = np.array([3, 40, 0, 0])
+player4 = np.array([4, 40, 0, 0])
 
 # defintions
 # choice = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
@@ -67,7 +72,7 @@ def comb_players(b): #Function to combine the players arrays
     player_stats_1d = np.concatenate((player1, player2, player3, player4)) #Combining the arrays
     logprint("Log: Arrays combined")
     
-    player_stats_2d = player_stats_1d.reshape(4, 8) #reshaping the array to 2D
+    player_stats_2d = player_stats_1d.reshape(4, 4) #reshaping the array to 2D
     logprint("Log: Array reshaped")
     logprint(player_stats_2d)
     
@@ -94,7 +99,7 @@ def comb_players(b): #Function to combine the players arrays
         # print(player_stats)
         i = 0
         for i in range(0, len(player_stats)):
-            np.delete(player_stats,)
+            np.delete(player_stats, 1)
             player_stats = np.delete(player_stats, 2, 0) # this one deletes the 3rd line 
             # print("Log: One line deleted")
             # print(player_stats)
@@ -214,15 +219,15 @@ def stats_check():
     # Check for overall damage
     i = 0
     for i in range(0, len(player_stats)):
-        if player_stats[i, 3] < 1:
+        if player_stats[i, 3] <= 0:
             player_lost(i)
     
-    # Check for overall damage
-    i, j = 0
-    for i in range(0, len(player_stats)):
-        for j in range(0, len(player_stats)):
-            if player_stats[i, j + 3] < 1 and i != j:
-                player_lost(i)
+    # # Check for overall damage
+    # i, j = 0
+    # for i in range(0, len(player_stats)):
+    #     for j in range(0, len(player_stats)):
+    #         if player_stats[i, j + 3] < 1 and i != j:
+    #             player_lost(i)
         
 
 def game(): #Game with states which will follow
